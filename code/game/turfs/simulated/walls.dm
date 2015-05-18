@@ -4,6 +4,7 @@
 	icon = 'icons/turf/walls.dmi'
 	var/mineral = "metal"
 	var/rotting = 0
+	color = "#BEBEBE"
 
 	var/damage = 0
 	var/damage_cap = 150 //Wall will break down to girders if damage reaches this point
@@ -382,7 +383,7 @@
 			user << "<span class='notice'>You need more welding fuel to complete this task.</span>"
 			return
 
-	else if( istype(W, /obj/item/weapon/pickaxe/plasmacutter) )
+	else if( istype(W, /obj/item/weapon/pickaxe/plasmacutter) || istype(W, /obj/item/weapon/gun/energy/laser/XENOMORPH) )
 
 		user << "<span class='notice'>You begin slicing through the outer plating.</span>"
 		playsound(src, 'sound/items/Welder.ogg', 100, 1)

@@ -13,7 +13,21 @@
 
 /datum/job/assistant/equip(var/mob/living/carbon/human/H)
 	if(!H)	return 0
-	H.equip_to_slot_or_del(new /obj/item/clothing/under/color/grey(H), slot_w_uniform)
+	if(!slot_w_uniform)
+		var/obj/item/rand_under = pick(random_under)
+		H.equip_to_slot_or_del(new rand_under(H), slot_w_uniform)
+	if(H.ckey == "ssting")
+		H.equip_to_slot_or_del(new /obj/item/clothing/suit/straight_jacket/chicken(H), slot_wear_suit)
+	if(H.ckey == "ravager966")
+		H.equip_to_slot_or_del(new /obj/item/clothing/under/psyche(H), slot_w_uniform)
+	if(H.ckey == "perfectian")
+		H.equip_to_slot_or_del(new /obj/item/weapon/deck/PERFECTIAN(H), slot_l_hand)
+	if(H.ckey == "darkyhard")
+		H.equip_to_slot_or_del(new /obj/item/clothing/suit/straight_jacket/chicken(H), slot_wear_suit)
+	if(H.ckey == "dendyds")
+		H.equip_to_slot_or_del(new /obj/item/clothing/suit/straight_jacket/chicken(H), slot_wear_suit)
+
+	//H.equip_to_slot_or_del(new /obj/item/clothing/under/color/grey(H), slot_w_uniform)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), slot_shoes)
 	if(H.backbag == 1)
 		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)

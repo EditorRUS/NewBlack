@@ -23,6 +23,7 @@
 	var/list/datum/mind/modePlayer = new
 	var/list/restricted_jobs = list()	// Jobs it doesn't make sense to be.  I.E chaplain or AI cultist
 	var/list/protected_jobs = list()	// Jobs that can't be traitors because
+	var/list/restricted_species = list() //nuff said
 	var/required_players = 0
 	var/required_players_secret = 0 //Minimum number of players for that game mode to be chose in Secret
 	var/required_enemies = 0
@@ -69,6 +70,8 @@
 		"Devices and Tools" = list(
 			new/datum/uplink_item(/obj/item/weapon/storage/toolbox/syndicate, 1, "Fully Loaded Toolbox", "ST"),
 			new/datum/uplink_item(/obj/item/weapon/plastique, 2, "C-4 (Destroys walls)", "C4"),
+			new/datum/uplink_item(/obj/item/weapon/plastique/lowpower, 4, "Low power explosive charge)", "C3"),
+			new/datum/uplink_item(/obj/item/weapon/plastique/highpower, 7, "High power explosive charge", "C2"),
 			new/datum/uplink_item(/obj/item/device/encryptionkey/syndicate, 2, "Encrypted Radio Channel Key", "ER"),
 			new/datum/uplink_item(/obj/item/device/encryptionkey/binary, 3, "Binary Translator Key", "BT"),
 			new/datum/uplink_item(/obj/item/weapon/card/emag, 3, "Cryptographic Sequencer", "EC"),
@@ -346,6 +349,12 @@
 		for(var/datum/mind/player in candidates)
 			for(var/job in restricted_jobs)
 				if(player.assigned_role == job)
+					candidates -= player
+
+	if(restricted_species)
+		for(var/datum/mind/player in candidates)
+			for(var/mob/living/species in restricted_species)
+				if(player.current == species)
 					candidates -= player
 
 	/*if(candidates.len < recommended_enemies)

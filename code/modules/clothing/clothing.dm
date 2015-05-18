@@ -201,6 +201,22 @@ BLIND     // can't see anything
 	species_restricted = list("exclude","Unathi","Tajara")
 	sprite_sheets = list("Vox" = 'icons/mob/species/vox/gloves.dmi')
 
+/obj/item/clothing/gloves/the_lord_of_the_rings
+	name = "the_lord_of_the_rings"
+	icon_state = "the_lord"
+	var/ring = 0
+
+/obj/item/clothing/gloves/the_lord_of_the_rings/attack_self(mob/user)
+	if(ring == 0)
+		user.invisibility = INVISIBILITY_OBSERVER
+		ring = 1
+		return
+
+	if(ring == 1)
+		user.invisibility = null
+		ring = 0
+		return
+
 /obj/item/clothing/gloves/update_clothing_icon()
 	if (ismob(src.loc))
 		var/mob/M = src.loc
@@ -399,6 +415,9 @@ BLIND     // can't see anything
 	w_class = 3
 	var/has_sensor = 1//For the crew computer 2 = unable to change mode
 	var/sensor_mode = 0
+	var/dirty = 0
+	var/dirt_icon = 0
+	var/true_name
 		/*
 		1 = Report living/dead
 		2 = Report detailed damages
@@ -478,6 +497,8 @@ BLIND     // can't see anything
 
 /obj/item/clothing/under/examine(mob/user)
 	..(user)
+	if(dirty)
+		user << "\red Its looks very dirty."
 	switch(src.sensor_mode)
 		if(0)
 			user << "Its sensors appear to be disabled."
@@ -490,6 +511,35 @@ BLIND     // can't see anything
 	if(accessories.len)
 		for(var/obj/item/clothing/accessory/A in accessories)
 			user << "\A [A] is attached to it."
+
+/obj/item/clothing/under/proc/stench()
+	var/list/last_mobs = list()
+	while(dirty)
+		if(prob(24))
+			last_mobs = list() //do randomly clear
+		for(var/mob/living/carbon/C in range(5, src))
+			if(!C in last_mobs)
+				C << "\red You feel awful stench from [src]."
+				last_mobs += C
+	sleep(200) //waiting for xmas? - M962
+
+/obj/item/clothing/under/proc/dirty()
+	if(dirty)
+		if(!dirt_icon)
+			var/icon/I = new('icons/obj/clothing/uniforms.dmi', src.icon_state)
+			I.Blend(new /icon('icons/obj/clothing/uniforms.dmi', rgb(255,255,255)),ICON_ADD)
+			I.Blend(new /icon('icons/obj/clothing/uniforms.dmi', "dirty"),ICON_MULTIPLY)
+
+			overlays += I
+			true_name = src.name
+			src.name = "dirty [src.name]"
+			dirt_icon = 1
+
+/obj/item/clothing/under/proc/clear_of_dirt()
+	if(dirty)
+		dirty = 0
+		overlays = null
+		src.name = true_name
 
 /obj/item/clothing/under/proc/set_sensors(mob/usr as mob)
 	var/mob/M = usr

@@ -280,6 +280,11 @@ datum/preferences
 
 	if(!islist(gear)) gear = list()
 
+
+	if(!gear || !gear.len)
+		gear += pick("blazer, blue", "clothes, rainbow", "clothes, oldman", "clothes, bluesuit", "clothes, navy", "executive suit")
+		return
+
 	if(gear && gear.len)
 		dat += "<br>"
 		for(var/i = 1; i <= gear.len; i++)
