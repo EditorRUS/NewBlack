@@ -121,27 +121,28 @@ var/global/datum/controller/gameticker/ticker
 	else
 		src.mode.announce()
 
-	for(var/mob/new_player/player in player_list)
-		if(player && player.ready && player.mind)
-			if(player.mind.assigned_role== "Head of Personnel")
-				if(player.mind.assigned_role== "Chief Engineer")
-					if(player.mind.assigned_role== "Scientist")
-						break
-					else
-						world << "<B>Reverting to pre-game lobby. For start the game needed Head of Personnel, Chief Engineer and Scientist!<B>"
-						current_state = GAME_STATE_PREGAME
-						job_master.ResetOccupations()
-						return 0
-				else
-					world << "<B>Reverting to pre-game lobby. For start the game needed Head of Personnel, Chief Engineer and Scientist!<B>"
-					current_state = GAME_STATE_PREGAME
-					job_master.ResetOccupations()
-					return 0
-			else
-				world << "<B>Reverting to pre-game lobby. For start the game needed Head of Personnel, Chief Engineer and Scientist!<B>"
-				current_state = GAME_STATE_PREGAME
-				job_master.ResetOccupations()
-				return 0
+	/*
+	var/list/necessary_profession = list( "Scientist", "Chief Engineer", "Head of Personal" )
+	var/need = necessary_profession.len
+	if( need )
+		var/error_text = necessary_profession[1] + "!</B>"
+		if( need > 1 )
+			error_text = necessary_profession[2] + error_text
+			if( need > 2 )
+				for( var/i = 3, i <= need, i++ )
+					error_text = necessary_profession[i] + ", " + error_text
+		error_text = "<B>Reverting to pre-game lobby. For start the game needed " + error_text
+
+		for( var/mob/new_player/player in player_list )
+			if( player && player.ready && player.mind )
+				necessary_profession -= player.mind.assigned_role
+
+		if( necessary_profession.len )
+			world << error_text
+			current_state = GAME_STATE_PREGAME
+			job_master.ResetOccupations()
+			return 0
+	*/
 
 	create_characters() //Create player characters and transfer them
 	collect_minds()

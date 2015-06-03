@@ -7,6 +7,7 @@
 /*
  * Beds
  */
+
 /obj/structure/bed
 	name = "bed"
 	desc = "This is used to lie in, sleep in or strap on."
@@ -16,6 +17,7 @@
 	anchored = 1
 	can_buckle = 1
 	buckle_lying = 1
+
 
 /obj/structure/bed/ex_act(severity)
 	switch(severity)
@@ -31,10 +33,19 @@
 				del(src)
 				return
 
+
 /obj/structure/bed/blob_act()
 	if(prob(75))
 		new /obj/item/stack/sheet/metal(src.loc)
 		del(src)
+
+
+/obj/structure/bed/Move()
+	..()
+	if(buckled_mob)
+		if(buckled_mob.buckled == src)
+			buckled_mob.loc = src.loc
+
 
 /obj/structure/bed/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/weapon/wrench))
@@ -44,24 +55,29 @@
 	else
 		..()
 
+
 /obj/structure/bed/psych
 	name = "psychiatrists couch"
 	desc = "For prime comfort during psychiatric evaluations."
 	icon_state = "psychbed"
+
 
 /obj/structure/bed/alien
 	name = "resting contraption"
 	desc = "This looks similar to contraptions from earth. Could aliens be stealing our technology?"
 	icon_state = "abed"
 
+
 /*
  * Roller beds
  */
+
 /obj/structure/bed/roller
 	name = "roller bed"
 	icon = 'icons/obj/rollerbed.dmi'
 	icon_state = "down"
 	anchored = 0
+
 
 /obj/structure/bed/roller/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/roller_holder))
@@ -75,6 +91,7 @@
 		return
 	..()
 
+
 /obj/item/roller
 	name = "roller bed"
 	desc = "A collapsed roller bed that can be carried around."
@@ -82,13 +99,14 @@
 	icon_state = "folded"
 	w_class = 4.0 // Can't be put in backpacks. Oh well.
 
+
 /obj/item/roller/attack_self(mob/user)
 		var/obj/structure/bed/roller/R = new /obj/structure/bed/roller(user.loc)
 		R.add_fingerprint(user)
 		del(src)
 
-/obj/item/roller/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
+/obj/item/roller/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/roller_holder))
 		var/obj/item/roller_holder/RH = W
 		if(!RH.held)
@@ -96,8 +114,8 @@
 			src.loc = RH
 			RH.held = src
 			return
-
 	..()
+
 
 /obj/item/roller_holder
 	name = "roller bed rack"
@@ -106,9 +124,11 @@
 	icon_state = "folded"
 	var/obj/item/roller/held
 
+
 /obj/item/roller_holder/New()
 	..()
 	held = new /obj/item/roller(src)
+
 
 /obj/item/roller_holder/attack_self(mob/user as mob)
 
@@ -122,14 +142,6 @@
 	del(held)
 	held = null
 
-
-/obj/structure/bed/roller/Move()
-	..()
-	if(buckled_mob)
-		if(buckled_mob.buckled == src)
-			buckled_mob.loc = src.loc
-		else
-			buckled_mob = null
 
 /obj/structure/bed/roller/post_buckle_mob(mob/living/M as mob)
 	if(M == buckled_mob)
@@ -145,11 +157,12 @@
 
 	return ..()
 
+
 /obj/structure/bed/roller/MouseDrop(over_object, src_location, over_location)
 	..()
+	if(!ishuman(usr))	return 0
+	if(buckled_mob)		return 0
 	if((over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
-		if(!ishuman(usr))	return
-		if(buckled_mob)	return 0
 		visible_message("[usr] collapses \the [src.name].")
 		new/obj/item/roller(get_turf(src))
 		spawn(0)

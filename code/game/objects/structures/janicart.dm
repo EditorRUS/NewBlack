@@ -219,13 +219,6 @@
 		user << "<span class='notice'>You'll need the keys in one of your hands to drive this [callme].</span>"
 
 
-/obj/structure/bed/chair/janicart/Move()
-	..()
-	if(buckled_mob)
-		if(buckled_mob.buckled == src)
-			buckled_mob.loc = loc
-
-
 /obj/structure/bed/chair/janicart/post_buckle_mob(mob/living/M)
 	update_mob()
 	return ..()
