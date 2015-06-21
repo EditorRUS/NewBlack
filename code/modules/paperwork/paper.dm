@@ -332,7 +332,7 @@
 			usr << "<span class='info'>You're trying to find a free place on paper, but can't!</span>"
 			return
 
-		var/t =  strip_html_simple(input("Enter what you want to write:", "Write", null, null) as message, textlimit)
+		var/t =  strip_html_simple(sanitize(input("Enter what you want to write:", "Write", null, null) as message, textlimit))
 
 		if(!t)
 			return
