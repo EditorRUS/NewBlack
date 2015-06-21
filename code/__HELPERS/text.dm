@@ -74,7 +74,9 @@ proc/sanitize_russian(var/msg) //?????????? ??? ?????, ??? ?? ????? ??????? ????
 
 
 //Runs byond's sanitization proc along-side sanitize_simple
-/proc/sanitize(var/t,var/list/repl_chars = list("\n"="#","\t"="#","ÿ"="&#255;"))
+/proc/sanitize(var/t,var/list/repl_chars = list("\n"="#","\t"="#","ÿ"="&#255;"),var/html=0)
+	if (html)
+		repl_chars["ÿ"] = "&#1103;"
 	for(var/char in repl_chars)
 		var/index = findtext(t, char)
 		while(index)

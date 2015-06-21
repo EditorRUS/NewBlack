@@ -538,6 +538,7 @@ proc/is_blind(A)
 					else										// Everyone else (dead people who didn't ghost yet, etc.)
 						lname = name
 				lname = "<span class='name'>[lname]</span> "
+			message = sanitize(message)
 			M << "<span class='deadsay'>" + create_text_tag("dead", "DEAD:", M.client) + " [lname][follow][message]</span>"
 
 //Announces that a ghost has joined/left, mainly for use with wizards

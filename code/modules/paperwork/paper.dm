@@ -332,7 +332,7 @@
 			usr << "<span class='info'>You're trying to find a free place on paper, but can't!</span>"
 			return
 
-		var/t =  strip_html_simple(sanitize(input("Enter what you want to write:", "Write", null, null) as message, textlimit))
+		var/t =  strip_html_simple(input("Enter what you want to write:", "Write", null, null) as message, textlimit)
 
 		if(!t)
 			return
@@ -364,7 +364,7 @@
 		t = html_encode(t)
 		t = replacetext(t, "\n", "<BR>")
 		t = parsepencode(t, i, usr, iscrayon) // Encode everything from pencode to html
-
+		t = sanitize(t, html=1)
 
 		if(fields > 50)//large amount of fields creates a heavy load on the server, see updateinfolinks() and addtofield()
 			usr << "<span class='warning'>Too many fields. Sorry, you can't do this.</span>"
