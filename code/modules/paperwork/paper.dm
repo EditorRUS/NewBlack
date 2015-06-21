@@ -361,10 +361,10 @@
 */
 		var last_fields_value = fields
 
-		t = html_encode(t)
+		t = rhtml_encode(t)
+		t = replacetext(t, "&#255;", "&#1103;")
 		t = replacetext(t, "\n", "<BR>")
 		t = parsepencode(t, i, usr, iscrayon) // Encode everything from pencode to html
-		t = sanitize(t, html=1)
 
 		if(fields > 50)//large amount of fields creates a heavy load on the server, see updateinfolinks() and addtofield()
 			usr << "<span class='warning'>Too many fields. Sorry, you can't do this.</span>"
